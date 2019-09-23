@@ -26,7 +26,7 @@ namespace DatingApp.API.Data
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Username == username);
 
             if (user == null ||
-                !IsValidPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+                !user.ValidatePassword(password))
             {
                 return null;
             }
@@ -36,37 +36,14 @@ namespace DatingApp.API.Data
             }
         }
 
-        private bool IsValidPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-        {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
-            {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                return computedHash.SequenceEqual(passwordHash);
-            }
-        }
-
         public async Task<User> Register(User user, string password)
         {
-            byte[] passwordHash,
-                passwordSalt;
-            CreatePasswordHash(password, out passwordHash, out passwordSalt);
-
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+            user.SetPassword(password);
 
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
             return user;
-        }
-
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
         }
     }
 }
