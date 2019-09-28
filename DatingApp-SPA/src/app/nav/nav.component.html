@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand" [routerLink]="['/home']">Dating App</a>
+    <a class="navbar-brand" [routerLink]="['']">Dating App</a>
 
     <div class="mr-auto">
         <ul *ngIf="loggedIn()" class="navbar-nav">
@@ -21,7 +21,7 @@
         </a>
 
         <div class="dropdown-menu dropdown-menu-right mt-3" *dropdownMenu>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" [routerLink]="['/profile']">
                 <i class="fa fa-user fa-fw mr-1"></i>Edit Profile
             </a>
             <div class="dropdown-divider"></div>

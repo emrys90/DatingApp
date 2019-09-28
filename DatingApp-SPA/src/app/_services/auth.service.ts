@@ -8,9 +8,9 @@ import { environment } from 'src/environments/environment';
     providedIn: 'root'
 })
 export class AuthService {
-    baseUrl = environment.apiUrl + 'auth/';
-    jwtHelper = new JwtHelperService();
-    decodedToken: any;
+    private baseUrl = environment.apiUrl + 'auth/';
+    private jwtHelper = new JwtHelperService();
+    private decodedToken: any;
 
     constructor(private http: HttpClient) {
         const token = localStorage.getItem('token');
@@ -44,6 +44,10 @@ export class AuthService {
         const val = token == null ? undefined : token;
 
         return !this.jwtHelper.isTokenExpired(val);
+    }
+
+    getUserId() {
+        return this.decodedToken.nameid;
     }
 
     getUsername() {

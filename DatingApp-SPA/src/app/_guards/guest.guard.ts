@@ -6,7 +6,7 @@ import { AlertifyService } from '../_services/alertify.service';
 @Injectable({
     providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class GuestGuard implements CanActivate {
     constructor(
         private authService: AuthService,
         private router: Router,
@@ -14,12 +14,11 @@ export class AuthGuard implements CanActivate {
     ) {}
 
     canActivate(): boolean {
-        if (this.authService.loggedIn()) {
+        if (!this.authService.loggedIn()) {
             return true;
         }
 
-        this.alertify.error('You must be logged in to access that area');
-        this.router.navigate(['']);
+        this.router.navigate(['/discover']);
         return false;
     }
 }

@@ -13,8 +13,6 @@ export class MemberListComponent implements OnInit {
     users!: User[];
 
     constructor(
-        private userService: UserService,
-        private alertify: AlertifyService,
         private route: ActivatedRoute
     ) {}
 
